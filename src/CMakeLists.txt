@@ -3,21 +3,14 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(DominusSources
     DominusMain.cpp
-    DominusMainWindow.cpp)
+    WebPage.cpp)
 
-set(DominusUIs
-    DominusMainWindow.ui)
-
-qt4_wrap_ui(DOMINUS_UIS_H
-    ${DominusUIs})
-
-qt4_wrap_cpp(DOMINUS_UI_MOC_SRCS
-    DominusMainWindow.h)
+qt4_wrap_cpp(DOMINUS_MOC_SRCS
+    WebPage.hpp)
 
 add_executable(Dominus WIN32
     ${DominusSources}
-    ${DOMINUS_UI_MOC_SRCS}
-    ${DOMINUS_UIS_H})
+    ${DOMINUS_MOC_SRCS})
 
 set_property(TARGET Dominus
     PROPERTY RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})

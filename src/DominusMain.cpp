@@ -17,7 +17,9 @@
 
 #include <iostream>
 #include <stdexcept>
-#include "DominusMainWindow.h"
+#include <QApplication>
+#include "WebPage.hpp"
+
 
 /// Dominus' entry point.
 int main(int argc, char* argv[])
@@ -27,7 +29,10 @@ int main(int argc, char* argv[])
       using namespace Dominus;
 
       QApplication app(argc, argv);
-      DominusMainWindow* mainWindow = new DominusMainWindow();
+
+      WebPage page("http://www.google.com", 0);
+
+      // DominusMainWindow* mainWindow = new DominusMainWindow();
 
       // We don't have to show the window!
       // mainWindow->show();

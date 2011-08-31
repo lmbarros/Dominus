@@ -15,7 +15,8 @@
 \******************************************************************************/
 
 
-#include "DominusMainWindow.h"
+#include "WebPage.hpp"
+#include <QCoreApplication>
 #include <QtWebKit/QWebElement>
 #include <QtWebKit/QWebFrame>
 
@@ -24,39 +25,32 @@
 
 namespace Dominus
 {
-   // - DominusMainWindow::DominusMainWindow -----------------------------------
-   DominusMainWindow::DominusMainWindow(QMainWindow* parent)
+   // - WebPage::WebPage -------------------------------------------------------
+   WebPage::WebPage(const std::string& url, int delay)
+      : delay_(delay)
    {
-      setupUi(this);
+      connect(&webPage_, SIGNAL(loadFinished(bool)),
+              this, SLOT(onLoadFinished(bool)));
       timer_.setSingleShot(true);
-      webView->load(QUrl::fromUserInput("http://www.google.com"));
+      webPage_.mainFrame()->load(QUrl::fromUserInput(url.c_str()));
    }
 
 
-   // - DominusMainWindow::~DominusMainWindow ----------------------------------
-   DominusMainWindow::~DominusMainWindow()
+   // - WebPage::onLoadFinished ------------------------------------------------
+   void WebPage::onLoadFinished(bool ok)
    {
-      // Empty
+      std::cerr << "WebPage::onLoadFinished()\n";
+      connect(&timer_, SIGNAL(timeout()), this, SLOT(onDelayFinished()));
+      timer_.start(delay_);
    }
 
 
-   // - DominusMainWindow::on_webView_loadFinished -----------------------------
-   void DominusMainWindow::on_webView_loadFinished(bool ok)
+   // - WebPage::onDelayFinished -----------------------------------------------
+   void WebPage::onDelayFinished()
    {
-      std::cerr << "DominusMainWindow::on_webView_loadFinished()\n";
-      connect(&timer_, SIGNAL(timeout()), this, SLOT(waitingFinished()));
-      timer_.start(10000);
-   }
+      std::cerr << "WebPage::onDelayFinished()\n";
 
-
-   // - DominusMainWindow::waitingFinished -------------------------------------
-   void DominusMainWindow::waitingFinished()
-   {
-      std::cerr << "DominusMainWindow::waitingFinished()\n";
-
-      QWebFrame* mainFrame = webView->page()->mainFrame();
-
-      QWebElement doc = mainFrame->documentElement();
+      QWebElement doc = webPage_.mainFrame()->documentElement();
 
       if (doc.isNull())
          std::cerr << "Oh, my!!!\n";
@@ -72,7 +66,7 @@ namespace Dominus
 
       std::cout << doc.toInnerXml().toStdString();
 
-      close();
+      QCoreApplication::quit();
    }
 
 } // namespace Dominus

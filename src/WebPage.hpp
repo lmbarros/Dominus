@@ -14,41 +14,47 @@
 *  GNU General Public License for more details.                                *
 \******************************************************************************/
 
-#ifndef _DOMINUS_MAINWINDOW_H_
-#define _DOMINUS_MAINWINDOW_H_
+#ifndef _DOMINUS_WEBPAGE_H_
+#define _DOMINUS_WEBPAGE_H_
 
-#include "ui_DominusMainWindow.h"
 #include <QTimer>
+#include <QtWebKit/QWebPage>
 
 
 namespace Dominus
 {
    /// The main (and only!) window of Dominus.
-   class DominusMainWindow: public QMainWindow, public Ui::DominusMainWindow
+   class WebPage: public QObject
    {
       Q_OBJECT
       public:
-         /// Constructs the \c DominusMainWindow.
-         DominusMainWindow(QMainWindow* parent = 0);
-
-         /// Destroys the \c DominusMainWindow.
-         ~DominusMainWindow();
+         /**
+          * Constructs the \c WebPage.
+          * xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+          */
+         WebPage(const std::string& url, int delay);
 
       private slots:
-         /// Called when \c webView finishes loading a page.
-         void on_webView_loadFinished(bool ok);
+         /// Called when \c webPage_ finishes loading the url.
+         void onLoadFinished(bool ok);
 
          /**
           * Called when the post-finish waiting finishes.
+          * // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
           */
-         void waitingFinished();
+         void onDelayFinished();
 
       private:
+         // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+         QWebPage webPage_;
+
          /// The timer used to wait after finishing.
          QTimer timer_;
 
+         // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+         const int delay_;
    };
 
 } // namespace Dominus
 
-#endif // _DOMINUS_MAINWINDOW_H_
+#endif // _DOMINUS_WEBPAGE_H_
