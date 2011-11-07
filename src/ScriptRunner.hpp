@@ -14,8 +14,8 @@
 *  GNU General Public License for more details.                                *
 \******************************************************************************/
 
-#ifndef _DOMINUS_SCRIPTRUNNER_H_
-#define _DOMINUS_SCRIPTRUNNER_H_
+#ifndef _DOMINUS_SCRIPTRUNNER_HPP_
+#define _DOMINUS_SCRIPTRUNNER_HPP_
 
 #include <QTimer>
 #include <QtWebKit/QWebPage>
@@ -76,4 +76,4 @@ namespace Dominus
 
 } // namespace Dominus
 
-#endif // _DOMINUS_SCRIPTRUNNER_H_
+#endif // _DOMINUS_SCRIPTRUNNER_HPP_
