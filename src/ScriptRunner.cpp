@@ -16,15 +16,21 @@
 
 
 #include "ScriptRunner.hpp"
+#include "Element.hpp"
 #include <QCoreApplication>
 #include <QtWebKit/QWebElement>
 #include <QtWebKit/QWebFrame>
+#include <Diluculum/LuaWrappers.hpp>
 
 #include <iostream> // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
 namespace Dominus
 {
+   /// The name of the Lua table used to store Dominus internal stuff.
+   const std::string DOMINUS_LUA_TABLE = "__Dominus__";
+
+
    // - ScriptRunner::ScriptRunner ---------------------------------------------
    ScriptRunner::ScriptRunner(const std::string& scriptFilePath)
       : scriptFilePath_(scriptFilePath)
@@ -37,6 +43,9 @@ namespace Dominus
       try
       {
          // First load the script
+         RegisterElement(luaState_);
+         luaState_[DOMINUS_LUA_TABLE] = Diluculum::LuaValueMap();
+
          luaState_.doFile(scriptFilePath_);
 
          if (luaState_["url"].value().type() != LUA_TSTRING)
@@ -126,7 +135,15 @@ namespace Dominus
       std::cerr << "ScriptRunner::runPostLoadAndQuit()\n"; // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
       if (luaState_["PostLoad"].value().type() == LUA_TFUNCTION)
-         luaState_["PostLoad"]();
+      {
+         QWebElement doc = webPage_.mainFrame()->documentElement();
+
+         Element docElement(&doc);
+
+         DILUCULUM_REGISTER_OBJECT(luaState_[DOMINUS_LUA_TABLE]["e"],
+                                   Element, docElement);
+         luaState_.doString("PostLoad(" + DOMINUS_LUA_TABLE + ".e)");
+      }
 
       QCoreApplication::quit();
    }

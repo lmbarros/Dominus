@@ -5,6 +5,7 @@ include_directories(
 
 set(DominusSources
     DominusMain.cpp
+    Element.cpp
     ScriptRunner.cpp
 
     # Lua
