@@ -18,7 +18,15 @@
 #include <iostream>
 #include <stdexcept>
 #include <QApplication>
-#include "WebPage.hpp"
+#include "ScriptRunner.hpp"
+
+
+void ShowUsage(const std::string& argv0)
+{
+   std::cerr << "Usage: " << argv0 << " <SCRIPT FILE>\n"
+             << "Dominus is a scriptable, window-less, non-browseable "
+             << "web browser.\n";
+}
 
 
 /// Dominus' entry point.
@@ -30,12 +38,24 @@ int main(int argc, char* argv[])
 
       QApplication app(argc, argv);
 
-      WebPage page("http://www.google.com", 0);
+      if (argc != 2)
+      {
+         ShowUsage(argv[0]);
+         return EXIT_FAILURE;
+      }
 
-      // DominusMainWindow* mainWindow = new DominusMainWindow();
+      const std::string scriptFile(argv[1]);
 
-      // We don't have to show the window!
-      // mainWindow->show();
+      ScriptRunner runner(scriptFile);
+
+      std::string errMsg;
+      const bool success = runner.startRunning(errMsg);
+
+      if (!success)
+      {
+         std::cerr << "Error: " << errMsg << '\n';
+         return EXIT_FAILURE;
+      }
 
       return app.exec();
    }

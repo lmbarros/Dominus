@@ -5,7 +5,7 @@ include_directories(
 
 set(DominusSources
     DominusMain.cpp
-    WebPage.cpp
+    ScriptRunner.cpp
 
     # Lua
     lua/src/all.c
@@ -27,7 +27,7 @@ endif(CMAKE_SYSTEM MATCHES "Linux")
 
 
 qt4_wrap_cpp(DOMINUS_MOC_SRCS
-    WebPage.hpp)
+    ScriptRunner.hpp)
 
 add_executable(Dominus WIN32
     ${DominusSources}
