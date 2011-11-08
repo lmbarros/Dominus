@@ -18,7 +18,6 @@
 #include "Element.hpp"
 #include <Diluculum/LuaExceptions.hpp>
 #include <Diluculum/LuaWrappers.hpp>
-#include <iostream> // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 
 namespace Dominus
@@ -36,19 +35,32 @@ namespace Dominus
    }
 
 
-   // - Element::sayHello ------------------------------------------------------
+   // - Element::getFirstAsText ------------------------------------------------
    Diluculum::LuaValueList
-   Element::sayHello(const Diluculum::LuaValueList& params)
+   Element::getFirstAsText(const Diluculum::LuaValueList& params)
    {
-      std::cerr << "Hello form C++!\n";
+      if (params.size() != 1 || params[0].type() != LUA_TSTRING)
+      {
+         throw std::runtime_error(
+            "Bad parameters passed to Element::getFirstAsText()");
+      }
 
-      return Diluculum::LuaValueList();
+      QWebElement e = element_->findFirst(params[0].asString().c_str());
+
+      Diluculum::LuaValueList ret;
+
+      if (e.isNull())
+         ret.push_back(Diluculum::Nil);
+      else
+         ret.push_back(e.toPlainText().toStdString());
+
+      return ret;
    }
 
 
    // Wrap Element using Diluculum
    DILUCULUM_BEGIN_CLASS(Element);
-      DILUCULUM_CLASS_METHOD (Element, sayHello);
+      DILUCULUM_CLASS_METHOD (Element, getFirstAsText);
    DILUCULUM_END_CLASS(Element);
 
 

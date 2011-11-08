@@ -42,9 +42,14 @@ namespace Dominus
           */
          Element(const Diluculum::LuaValueList& params);
 
-         // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+         /**
+          * Returns the first HTML element matching a given CSS selector. In
+          * Lua, this function takes one parameter: the desired selector (a
+          * string). If the requested element does not exist, returns \c
+          * nil. Otherwise, returns the element as plain text (a string).
+          */
          Diluculum::LuaValueList
-         sayHello(const Diluculum::LuaValueList& params);
+         getFirstAsText(const Diluculum::LuaValueList& params);
 
       private:
          /// The Qt HTML element wrapped by this \c element.

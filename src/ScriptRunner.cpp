@@ -107,25 +107,6 @@ namespace Dominus
    {
       std::cerr << "ScriptRunner::onDelayFinished()\n"; // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
       runPostLoadAndQuit();
-
-#if 0
-      QWebElement doc = webPage_.mainFrame()->documentElement();
-
-      if (doc.isNull())
-         std::cerr << "Oh, my!!!\n";
-
-      QWebElement e = doc.findFirst("a#gb_1");
-
-      if (e.isNull())
-         std::cerr << ":-(\n";
-      else
-         std::cerr << e.toPlainText().toStdString() << '\n';
-
-      std::cerr << "Really finished!\n";
-
-      std::cout << doc.toInnerXml().toStdString();
-      QCoreApplication::quit();
-#endif
    }
 
 
@@ -137,6 +118,9 @@ namespace Dominus
       if (luaState_["PostLoad"].value().type() == LUA_TFUNCTION)
       {
          QWebElement doc = webPage_.mainFrame()->documentElement();
+
+         if (doc.isNull())
+            throw std::runtime_error("Got a null document Web Element");
 
          Element docElement(&doc);
 
