@@ -22,8 +22,6 @@
 #include <QtWebKit/QWebFrame>
 #include <Diluculum/LuaWrappers.hpp>
 
-#include <iostream> // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
 
 namespace Dominus
 {
@@ -83,8 +81,6 @@ namespace Dominus
    // - ScriptRunner::onLoadFinished -------------------------------------------
    void ScriptRunner::onLoadFinished(bool ok)
    {
-      std::cerr << "ScriptRunner::onLoadFinished()\n"; // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
       int delay = 0;
 
       if (luaState_["delay"].value().type() == LUA_TNUMBER)
@@ -105,7 +101,6 @@ namespace Dominus
    // - ScriptRunner::onDelayFinished ------------------------------------------
    void ScriptRunner::onDelayFinished()
    {
-      std::cerr << "ScriptRunner::onDelayFinished()\n"; // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
       runPostLoadAndQuit();
    }
 
@@ -113,8 +108,6 @@ namespace Dominus
    // - ScriptRunner::runPostLoadAndQuit ---------------------------------------
    void ScriptRunner::runPostLoadAndQuit()
    {
-      std::cerr << "ScriptRunner::runPostLoadAndQuit()\n"; // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
       if (luaState_["PostLoad"].value().type() == LUA_TFUNCTION)
       {
          QWebElement doc = webPage_.mainFrame()->documentElement();
