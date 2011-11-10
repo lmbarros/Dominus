@@ -59,9 +59,9 @@ namespace Dominus
 
 
    // Wrap Element using Diluculum
-   DILUCULUM_BEGIN_CLASS(Element);
-      DILUCULUM_CLASS_METHOD (Element, getFirstAsText);
-   DILUCULUM_END_CLASS(Element);
+   DILUCULUM_BEGIN_CLASS(Element)
+      DILUCULUM_CLASS_METHOD (Element, getFirstAsText)
+   DILUCULUM_END_CLASS(Element)
 
 
    // - RegisterElement --------------------------------------------------------

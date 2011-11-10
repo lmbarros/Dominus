@@ -12,5 +12,13 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
 find_package(Qt4)
 include(${QT_USE_FILE})
 
+# Treat Qt include dirs as system directories, so that we don't get warnings
+# from them.
+include_directories(SYSTEM ${QT_INCLUDE_DIR})
+
+
+# Warnings to use
+set(DOMINUS_GXX_WARNINGS "-Wall -pedantic")
+
 # Process sub-directories
 add_subdirectory(src)
